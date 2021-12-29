@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import AddCharity from './Components/AddCharity';
+import { CONTRACT_ADDRESS } from './constants';
+import Charities from './utils/Charities.json';
 
 const App = () => {
   // State
@@ -74,9 +77,12 @@ const App = () => {
      */
     } else if (currentAccount) {
       return (
-        <div className="header-container">
-          <p className="sub-text">You are now logged in!</p>
-          <p className="sub-text">{currentAccount}</p>
+        <div>
+          <AddCharity/>
+          <div className="header-container">
+            <p className="sub-text">You are now logged in!</p>
+            <p className="sub-text">{currentAccount}</p>
+          </div>
         </div>
       );
     }

@@ -45,26 +45,8 @@ const AddCharity = () => {
         }
     }, []);
 
-    useEffect(() => {
-        const getNumCharities = async () => {
-            try {
-            console.log('Getting number of charities');
-        
-            const all = await charitiesContract.numOfCharities();
-            console.log('Number of charities:', all.toNumber());
-        
-            } catch (error) {
-            console.error('Something went wrong fetching charities:', error);
-            }
-        };
-        
-        if (charitiesContract) {
-            getNumCharities();
-        }
-    }, [charitiesContract]);
-
     return (
-        <div >
+        <div>
             <p className="sub-text">{newCharity}</p>
 
             <input 

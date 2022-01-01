@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import AddCharity from './Components/AddCharity';
+import DisplayCharities from './Components/DisplayCharities';
 import { CONTRACT_ADDRESS } from './constants';
 import Charities from './utils/Charities.json';
 
@@ -64,6 +65,7 @@ const App = () => {
     if (!currentAccount) {
       return (
         <div className="connect-wallet-container">
+          <p className="sub-text">Login With Metamask</p>
           <button
             className="cta-button connect-wallet-button"
             onClick={connectWalletAction}
@@ -78,11 +80,11 @@ const App = () => {
     } else if (currentAccount) {
       return (
         <div>
-          <AddCharity/>
           <div className="header-container">
             <p className="sub-text">You are now logged in!</p>
             <p className="sub-text">{currentAccount}</p>
           </div>
+          <DisplayCharities/>
         </div>
       );
     }
@@ -96,7 +98,6 @@ const App = () => {
     <div className="App">
       <div className="container">
         <div className="header-container">
-          <p className="sub-text">Login With Metamask</p>
           {renderContent()}
         </div>
       </div>

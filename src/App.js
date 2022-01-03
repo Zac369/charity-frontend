@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import AddCharity from './Components/AddCharity';
 import DisplayCharities from './Components/DisplayCharities';
 import { CONTRACT_ADDRESS } from './constants';
 import Charities from './utils/Charities.json';

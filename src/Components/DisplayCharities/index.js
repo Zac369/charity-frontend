@@ -8,9 +8,14 @@ import Charities from './../../utils/Charities.json'; // ABI
 const DisplayCharities = () => {
     const [charitiesContract, setCharitiesContract] = useState(null);
     const [allCharities, setAllCharities] = useState([]);
-    const [newCharity, setNewCharity] = useState("");
+    const [newCharityName, setNewCharityName] = useState("");
+    const [newCharityAddress, setNewCharityAddress] = useState("");
     const [addingCharity, setAddingCharity] = useState(false);
     const [numOfCharities, setNumOfCharities] = useState(0);
+
+    const shortenAddress = (str) => {
+        return str.substring(0, 6) + "..." + str.substring(str.length - 4);
+      };
 
     useEffect(() => {
         const { ethereum } = window;
@@ -31,12 +36,12 @@ const DisplayCharities = () => {
         }
     }, []);
 
-    const addCharityAction = (charityAddress) => async () => {
+    const addCharityAction = (charityName, charityAddress) => async () => {
         try {
           if (charitiesContract) {
             setAddingCharity(true);
             console.log('Adding charity in progress...');
-            const mintTxn = await charitiesContract.newCharity(charityAddress);
+            const mintTxn = await charitiesContract.newCharity(charityAddress, charityName);
             await mintTxn.wait();
             console.log('mintTxn:', mintTxn);
             setAddingCharity(false);
@@ -65,10 +70,13 @@ const DisplayCharities = () => {
 
             let charities = [];
             for (let i = 0; i < numberOfCharities; i++) {
-                let amount = await charitiesContract.getCharityAmount(i);
-                amount = ethers.utils.formatEther(amount)
-                console.log(amount)
-                const charity = {index: i, amount: amount};
+                let ch = await charitiesContract.getCharity(i+1);
+                let charityName = ch[0];
+                let charityAddress = ch[1];
+                let charityAmount = ch[2];
+
+                charityAmount = ethers.utils.formatEther(charityAmount)
+                const charity = {index: i, name: charityName, address: charityAddress, amount: charityAmount};
                 charities.push(charity);
             }
 
@@ -87,16 +95,25 @@ const DisplayCharities = () => {
     return (
         <div>
             <div>
-                <p className="sub-text"></p>
-
-                <input 
-                type="text" 
-                value={newCharity}
-                onChange={(e) => setNewCharity(e.target.value)}
-                />
-                
+                <p className="sub-text">
+                    <label>Name:
+                        <input 
+                        type="text" 
+                        value={newCharityName}
+                        onChange={(e) => setNewCharityName(e.target.value)}
+                        />
+                    </label>
+                    
+                    <label>Address:
+                        <input 
+                        type="text" 
+                        value={newCharityAddress}
+                        onChange={(e) => setNewCharityAddress(e.target.value)}
+                        />
+                    </label>
+                </p>
                 {addingCharity === false &&
-                    <button className="cta-button connect-wallet-button" onClick={addCharityAction(newCharity)}>
+                    <button className="cta-button connect-wallet-button" onClick={addCharityAction(newCharityName, newCharityAddress)}>
                     Add Charity
                     </button>
                 }
@@ -118,8 +135,8 @@ const DisplayCharities = () => {
                         {allCharities.map((charity) => {
                             return (
                                 <tr key={charity.index}>
-                                    <td>Add</td>
-                                    <td>Later</td>
+                                    <td>{charity.name}</td>
+                                    <td>{shortenAddress(charity.address)}</td>
                                     <td>{charity.amount}</td>
                                 </tr>
                             );

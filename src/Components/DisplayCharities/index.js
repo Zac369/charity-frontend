@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 
 import './DisplayCharities.css';
-import { CONTRACT_ADDRESS } from './../../constants';
+import { CONTRACT_ADDRESS, shortenAddress } from './../../constants';
 import Charities from './../../utils/Charities.json'; // ABI
 
 const DisplayCharities = () => {
@@ -12,10 +12,6 @@ const DisplayCharities = () => {
     const [newCharityAddress, setNewCharityAddress] = useState("");
     const [addingCharity, setAddingCharity] = useState(false);
     const [numOfCharities, setNumOfCharities] = useState(0);
-
-    const shortenAddress = (str) => {
-        return str.substring(0, 6) + "..." + str.substring(str.length - 4);
-      };
 
     useEffect(() => {
         const { ethereum } = window;
@@ -113,7 +109,7 @@ const DisplayCharities = () => {
                     </label>
                 </p>
                 {addingCharity === false &&
-                    <button className="cta-button connect-wallet-button" onClick={addCharityAction(newCharityName, newCharityAddress)}>
+                    <button className="add-charity-button" onClick={addCharityAction(newCharityName, newCharityAddress)}>
                     Add Charity
                     </button>
                 }
@@ -132,7 +128,8 @@ const DisplayCharities = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {allCharities.map((charity) => {
+                        
+                        {allCharities !== 0 && allCharities.map((charity) => {
                             return (
                                 <tr key={charity.index}>
                                     <td>{charity.name}</td>

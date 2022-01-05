@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import './App.css';
 import DisplayCharities from './Components/DisplayCharities';
-import { CONTRACT_ADDRESS } from './constants';
+import Home from './Components/Home';
+import TokenShop from './Components/TokenShop';
+import { CONTRACT_ADDRESS, shortenAddress } from './constants';
 import Charities from './utils/Charities.json';
 
 const App = () => {
@@ -63,28 +66,18 @@ const App = () => {
      */
     if (!currentAccount) {
       return (
-        <div className="connect-wallet-container">
-          <p className="sub-text">Login With Metamask</p>
-          <button
-            className="cta-button connect-wallet-button"
+          <button className="connect-wallet-button"
             onClick={connectWalletAction}
           >
-            Connect Wallet To Get Started
+            Connect Wallet
           </button>
-        </div>
       );
       /*
      * User Is Logged In
      */
     } else if (currentAccount) {
       return (
-        <div>
-          <div className="header-container">
-            <p className="sub-text">You are now logged in!</p>
-            <p className="sub-text">{currentAccount}</p>
-          </div>
-          <DisplayCharities/>
-        </div>
+        <p className="connect-wallet-text">{shortenAddress(currentAccount)}</p>
       );
     }
   };
@@ -94,13 +87,22 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <div className="container">
-        <div className="header-container">
-          {renderContent()}
-        </div>
-      </div>
-    </div>
+    <Router>
+      <nav className="navbar">
+        <Link className="nav-link" to="/"> Home </Link>
+        <Link className="nav-link" to="/charities"> Charities </Link>
+        <Link className="nav-link" to="/token">Token Shop</Link>
+        
+        {renderContent()}
+        
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home/>} />
+        <Route path="/charities" element={<DisplayCharities/>} />
+        <Route path="/token" element={<TokenShop/>} />
+      </Routes>
+      
+    </Router>
   );
 };
 

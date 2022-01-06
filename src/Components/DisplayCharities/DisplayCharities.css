@@ -33,11 +33,13 @@ input {
     color: #36382E;
     border-radius: 0.313rem;
     font-size: 1.2rem;
+    text-align: center;
+    border: 0.2rem solid #36382E;
 }
 
 .add-charity-button {
     width: 12rem;
-    margin:0 auto 1rem;
+    margin: 2rem auto 2rem;
     display:block;
     text-align: center;
     font-size: 1.5rem;

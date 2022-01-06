@@ -26,9 +26,10 @@
 }
 
 .connect-wallet-button, .connect-wallet-text {
+  display:inline-block;
   color: #36382E;
   position: absolute;
-  width: 12rem;
+  width: 13rem;
   padding: 0 0.625rem 0 0.625rem;
   right: 0.625rem;
   top: 1.25rem;
@@ -45,7 +46,11 @@
   );
 }
 
-.connect-wallet-text {
+p.connect-wallet-text {
   top: -0.313rem;
   cursor: auto;
+}
+
+button.connect-wallet-button {
+  width: 14.25rem;
 }

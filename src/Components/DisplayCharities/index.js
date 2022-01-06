@@ -54,20 +54,15 @@ const DisplayCharities = ({currentAccount}) => {
     useEffect(() => {
         const updateCharities = async () => {
             try {
-            console.log('Getting number of charities');
-        
             let numberOfCharities = await charitiesContract.numOfCharities();
             
             numberOfCharities = numberOfCharities.toNumber()
-            console.log('Number of charities:', numberOfCharities);
 
             // used when page first loads
             if(numberOfCharities > numOfCharities) {
                 setNumOfCharities(numberOfCharities);
                 return;
             }
-
-            console.log("HERE");
 
             let charities = [];
             for (let i = 0; i < numberOfCharities; i++) {

@@ -4,8 +4,7 @@ import './App.css';
 import DisplayCharities from './Components/DisplayCharities';
 import Home from './Components/Home';
 import TokenShop from './Components/TokenShop';
-import { CONTRACT_ADDRESS, shortenAddress } from './constants';
-import Charities from './utils/Charities.json';
+import { shortenAddress } from './constants';
 
 const App = () => {
   // State

@@ -115,7 +115,7 @@ const DisplayCharities = ({currentAccount}) => {
                 }
 
                 {addingCharity === true &&
-                    <p className="sub-text">Adding Charity...</p>
+                    <p className="adding-charity">Adding...</p>
                 }
             </div>
             <div>

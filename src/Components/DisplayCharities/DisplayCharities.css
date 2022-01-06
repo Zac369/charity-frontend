@@ -1,6 +1,54 @@
-td, th {
-    border: 1px solid #999;
-    padding: 0.5rem;
-    font-size: 20px;
+table {
+    table-layout: fixed;
+    font-size: 1.2rem;
     font-weight: bold;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50rem;
+}
+
+.amount th {
+    background-color: #5BC3EB;
+}
+
+td, th {
+    background-color: #F06449;
+    border: 0.1rem solid #999;
+    padding: 0.5rem;
+    border-radius: 0.313rem;
+    color: #36382E;
+}
+
+.sub-text {
+    text-align: center;
+    padding: 0 2rem;
+    color: #36382E;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+input {
+    margin: 0 2rem;
+    color: #36382E;
+    border-radius: 0.313rem;
+    font-size: 1.2rem;
+}
+
+.add-charity-button {
+    width: 12rem;
+    margin:0 auto 1rem;
+    display:block;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #36382E;
+    border-radius: 0.313rem;
+    cursor: pointer;
+    background-image: linear-gradient(
+        to right,
+        #F06449 0%,
+        #DADAD9 50%,
+        #5BC3EB 100%
+    );
 }

@@ -18,7 +18,7 @@
   word-wrap: normal;
   border-radius: 0.313rem;
   background-color: #36382E;
-  transition: background-color .5s;
+  transition: background-color 1s;
 }
 
 .nav-link:hover {
@@ -26,6 +26,7 @@
 }
 
 .connect-wallet-button, .connect-wallet-text {
+  color: #36382E;
   position: absolute;
   width: 12rem;
   padding: 0 0.625rem 0 0.625rem;
@@ -33,14 +34,14 @@
   top: 1.25rem;
   text-align: center;
   font-size: 1.5rem;
+  font-weight: bold;
   border-radius: 0.313rem;
   cursor: pointer;
   background-image: linear-gradient(
     to right,
-    #00f7ff 0%,
-    #00b3ca 33%,
-    #008cff 66%,
-    #0066ff 100%
+    #F06449 0%,
+    #DADAD9 50%,
+    #5BC3EB 100%
   );
 }
 

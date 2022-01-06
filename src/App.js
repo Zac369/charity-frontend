@@ -98,7 +98,7 @@ const App = () => {
       </nav>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/charities" element={<DisplayCharities/>} />
+        <Route path="/charities" element={<DisplayCharities currentAccount={currentAccount}/>} />
         <Route path="/token" element={<TokenShop/>} />
       </Routes>
       

@@ -5,7 +5,7 @@ import './DisplayCharities.css';
 import { CONTRACT_ADDRESS, shortenAddress } from './../../constants';
 import Charities from './../../utils/Charities.json'; // ABI
 
-const DisplayCharities = () => {
+const DisplayCharities = ({currentAccount}) => {
     const [charitiesContract, setCharitiesContract] = useState(null);
     const [allCharities, setAllCharities] = useState([]);
     const [newCharityName, setNewCharityName] = useState("");
@@ -33,6 +33,8 @@ const DisplayCharities = () => {
     }, []);
 
     const addCharityAction = (charityName, charityAddress) => async () => {
+        setNewCharityName("");
+        setNewCharityAddress("");
         try {
           if (charitiesContract) {
             setAddingCharity(true);
@@ -62,7 +64,10 @@ const DisplayCharities = () => {
             // used when page first loads
             if(numberOfCharities > numOfCharities) {
                 setNumOfCharities(numberOfCharities);
+                return;
             }
+
+            console.log("HERE");
 
             let charities = [];
             for (let i = 0; i < numberOfCharities; i++) {
@@ -77,20 +82,20 @@ const DisplayCharities = () => {
             }
 
             setAllCharities(charities);
-        
+            
             } catch (error) {
             console.error('Something went wrong fetching charities:', error);
             }
         };
         
-        if (charitiesContract) {
+        if (charitiesContract && currentAccount) {
             updateCharities();
         }
-    }, [charitiesContract, numOfCharities]);
+    }, [charitiesContract, numOfCharities, currentAccount]);
 
     return (
         <div>
-            <div>
+            <div className="add-charity-container">
                 <p className="sub-text">
                     <label>Name:
                         <input 
@@ -128,8 +133,7 @@ const DisplayCharities = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        
-                        {allCharities !== 0 && allCharities.map((charity) => {
+                        {numOfCharities !==0 && allCharities.map((charity) => {
                             return (
                                 <tr key={charity.index}>
                                     <td>{charity.name}</td>

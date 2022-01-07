@@ -31,6 +31,7 @@
 .container p {
     background-color:#EDE6E3;
     font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .container div {
@@ -38,3 +39,6 @@
     border-radius: 1rem;
 }
 
+.num-tokens {
+    border-radius: 1rem;
+}

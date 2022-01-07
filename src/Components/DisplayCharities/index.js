@@ -2,35 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 
 import './DisplayCharities.css';
-import { CONTRACT_ADDRESS, shortenAddress } from './../../constants';
-import Charities from './../../utils/Charities.json'; // ABI
+import { shortenAddress } from './../../constants';
 
-const DisplayCharities = ({currentAccount}) => {
-    const [charitiesContract, setCharitiesContract] = useState(null);
+const DisplayCharities = ({currentAccount, charitiesContract}) => {
     const [allCharities, setAllCharities] = useState([]);
     const [newCharityName, setNewCharityName] = useState("");
     const [newCharityAddress, setNewCharityAddress] = useState("");
     const [addingCharity, setAddingCharity] = useState(false);
     const [numOfCharities, setNumOfCharities] = useState(0);
-
-    useEffect(() => {
-        const { ethereum } = window;
-    
-        if (ethereum) {
-          const provider = new ethers.providers.Web3Provider(ethereum);
-          const signer = provider.getSigner();
-          const charitiesContract = new ethers.Contract(
-            CONTRACT_ADDRESS,
-            Charities.abi,
-            signer
-          );
-    
-          setCharitiesContract(charitiesContract);
-          console.log('Ethereum object found');
-        } else {
-          console.log('Ethereum object not found');
-        }
-    }, []);
 
     const addCharityAction = (charityName, charityAddress) => async () => {
         setNewCharityName("");
@@ -46,7 +25,7 @@ const DisplayCharities = ({currentAccount}) => {
             setNumOfCharities(numOfCharities + 1)
           }
         } catch (error) {
-          console.warn('MintCharacterAction Error:', error);
+          console.warn('Add Charity Error:', error);
           setAddingCharity(false);
         }
       };
@@ -54,32 +33,32 @@ const DisplayCharities = ({currentAccount}) => {
     useEffect(() => {
         const updateCharities = async () => {
             try {
-            let numberOfCharities = await charitiesContract.numOfCharities();
-            
-            numberOfCharities = numberOfCharities.toNumber()
+                let numberOfCharities = await charitiesContract.numOfCharities();
+                
+                numberOfCharities = numberOfCharities.toNumber()
 
-            // used when page first loads
-            if(numberOfCharities > numOfCharities) {
-                setNumOfCharities(numberOfCharities);
-                return;
-            }
+                // used when page first loads
+                if(numberOfCharities > numOfCharities) {
+                    setNumOfCharities(numberOfCharities);
+                    return;
+                }
 
-            let charities = [];
-            for (let i = 0; i < numberOfCharities; i++) {
-                let ch = await charitiesContract.getCharity(i+1);
-                let charityName = ch[0];
-                let charityAddress = ch[1];
-                let charityAmount = ch[2];
+                let charities = [];
+                for (let i = 0; i < numberOfCharities; i++) {
+                    let ch = await charitiesContract.getCharity(i+1);
+                    let charityName = ch[0];
+                    let charityAddress = ch[1];
+                    let charityAmount = ch[2];
 
-                charityAmount = ethers.utils.formatEther(charityAmount)
-                const charity = {index: i, name: charityName, address: charityAddress, amount: charityAmount};
-                charities.push(charity);
-            }
+                    charityAmount = ethers.utils.formatEther(charityAmount)
+                    const charity = {index: i, name: charityName, address: charityAddress, amount: charityAmount};
+                    charities.push(charity);
+                }
 
-            setAllCharities(charities);
+                setAllCharities(charities);
             
             } catch (error) {
-            console.error('Something went wrong fetching charities:', error);
+                console.error('Something went wrong fetching charities:', error);
             }
         };
         

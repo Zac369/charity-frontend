@@ -9,6 +9,31 @@
     background-color: #EDE6E3;
 }
 
+.header input[type="radio"] {
+    display: none;
+}
+
+.header label {
+    display: inline-block;
+    font-weight: bold;
+    background-color: #36382E;
+    color: #EDE6E3;
+    margin: 0 0.5rem 0 0.5rem;
+    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.header input[type="radio"]:checked+label {
+    background-color: #F06449;
+    color: white;
+}
+
+.header input[type="radio"]:hover+label {
+    color: white;
+}
+
 .container button{
     position: relative;
     width: 8rem;
@@ -25,7 +50,7 @@
 }
 
 .container button:hover {
-    background-color: #F06449;
+    color: white;
 }
 
 .container p {

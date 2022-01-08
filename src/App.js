@@ -6,13 +6,15 @@ import './App.css';
 import DisplayCharities from './Components/DisplayCharities';
 import Home from './Components/Home';
 import TokenShop from './Components/TokenShop';
-import { CONTRACT_ADDRESS, shortenAddress } from './constants';
+import { CONTRACT_ADDRESS, TOKEN_ADDRESS, shortenAddress } from './constants';
 import Charities from './utils/Charities.json'; // ABI
+import Token from './utils/Token.json'; // ABI
 
 const App = () => {
   // State
   const [currentAccount, setCurrentAccount] = useState(null);
   const [charitiesContract, setCharitiesContract] = useState(null);
+  const [tokenContract, setTokenContract] = useState(null);
 
   useEffect(() => {
     const { ethereum } = window;
@@ -20,13 +22,21 @@ const App = () => {
     if (ethereum) {
       const provider = new ethers.providers.Web3Provider(ethereum);
       const signer = provider.getSigner();
+
       const charitiesContract = new ethers.Contract(
         CONTRACT_ADDRESS,
         Charities.abi,
         signer
       );
-
       setCharitiesContract(charitiesContract);
+
+      const tokenContract = new ethers.Contract(
+        TOKEN_ADDRESS,
+        Token.abi,
+        signer
+      );
+      setTokenContract(tokenContract);
+      
       console.log('Ethereum object found');
     } else {
       console.log('Ethereum object not found');
@@ -121,7 +131,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/charities" element={<DisplayCharities currentAccount={currentAccount} charitiesContract={charitiesContract}/>} />
-        <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract}/>} />
+        <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
       </Routes>
       
     </Router>

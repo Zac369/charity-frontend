@@ -23,6 +23,7 @@
 
 .nav-link:hover {
   background-color: #F06449;
+  color: white;
 }
 
 .connect-wallet-button, .connect-wallet-text {

@@ -10,6 +10,10 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
     const [trading, setTrading] = useState(false);
 
     const tradeTokens = (amount, option) => async () => {
+        if (amount <= 0) {
+            console.log("Tokens must be greater than 0");
+            return;
+        } 
         setSelectedTokens(0);
         console.log(amount);
         console.log(option);
@@ -21,6 +25,10 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
             await txnBuy.wait();
             setTrading(false);
         } else if (option === "sell") {
+            if (amount > numTokens) {
+                console.log("Error Too many tokens");
+                return;
+            }
             const txnApprove = await tokenContract.approve(charitiesContract.address, weiAmount.toString());
             await txnApprove.wait();
             const txnSell = await charitiesContract.sell(weiAmount.toString());
@@ -61,9 +69,11 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
                 <label htmlFor="sell">Sell</label>
             </div>
             <div>
-                <p>Select number of tokens to trade:</p>
+                <p>Conversion Rate: 1Eth = 10000 Tokens</p>
+                <p>Select Number Of Tokens To Trade:</p>
                 <input type="number" min="0" value={selectedTokens} onChange={(e) => setSelectedTokens(e.target.value)}></input>
-                <button 
+                <p>{selectedTokens / 1} Tokens = {selectedTokens / 10000} Eth</p>
+                <button className="trade-button" 
                 onClick={tradeOption && tradeTokens(selectedTokens, tradeOption)}>
                 Trade
                 </button>

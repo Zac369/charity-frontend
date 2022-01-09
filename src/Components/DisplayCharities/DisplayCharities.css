@@ -21,6 +21,13 @@ td, th {
     color: #36382E;
 }
 
+.table-header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    color: #36382E;
+}
+
 .sub-text {
     text-align: center;
     padding: 0 2rem;
@@ -30,7 +37,7 @@ td, th {
 }
 
 input {
-    margin: 0 2rem;
+    margin: 0 1rem 0 1rem;
     color: #36382E;
     border-radius: 0.313rem;
     font-size: 1.2rem;
@@ -38,11 +45,18 @@ input {
     border: 0.2rem solid #36382E;
 }
 
+label {
+    margin: 0 1rem 0 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #36382E;
+}
+
 .add-charity-button, .adding-charity {
     width: 13rem;
     height: 2.5rem;
     margin: 2rem auto 2rem;
-    display:block;
+    display: inline-block;
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
@@ -50,6 +64,10 @@ input {
     border-radius: 0.313rem;
     cursor: pointer;
     background-color: #36382E;
+}
+
+.add-charity-container {
+    text-align: center;
 }
 
 .add-charity-button:hover {

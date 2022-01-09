@@ -7,51 +7,58 @@ import { shortenAddress } from './../../constants';
 const DisplayCharities = ({currentAccount, charitiesContract}) => {
     const [allCharities, setAllCharities] = useState([]);
     const [newCharityName, setNewCharityName] = useState("");
-    const [newCharityAddress, setNewCharityAddress] = useState("");
     const [addingCharity, setAddingCharity] = useState(false);
     const [numOfCharities, setNumOfCharities] = useState(0);
+    const [charityStatus, setCharityStatus] = useState(null);
 
-    const addCharityAction = (charityName, charityAddress) => async () => {
+
+    const addCharityAction = (charityName) => async () => {
+        if (!newCharityName) {
+            console.log("Name must not be empty");
+            return;
+        }
         setNewCharityName("");
-        setNewCharityAddress("");
         try {
-          if (charitiesContract) {
+            const registered = await charitiesContract.isRegistered(currentAccount);
+            if (registered) {
+                console.log("You are already registered");
+                return;
+            }
             setAddingCharity(true);
             console.log('Adding charity in progress...');
-            const mintTxn = await charitiesContract.newCharity(charityAddress, charityName);
+            const mintTxn = await charitiesContract.newCharity(currentAccount, charityName);
             await mintTxn.wait();
             console.log('mintTxn:', mintTxn);
             setAddingCharity(false);
             setNumOfCharities(numOfCharities + 1)
-          }
         } catch (error) {
-          console.warn('Add Charity Error:', error);
-          setAddingCharity(false);
+            console.warn('Add Charity Error:', error);
+            setAddingCharity(false);
         }
       };
 
     useEffect(() => {
         const updateCharities = async () => {
             try {
-                let numberOfCharities = await charitiesContract.numOfCharities();
-                
-                numberOfCharities = numberOfCharities.toNumber()
+                let listOfCharities = await charitiesContract.getCharityList();
 
                 // used when page first loads
-                if(numberOfCharities > numOfCharities) {
-                    setNumOfCharities(numberOfCharities);
+                if(listOfCharities.length > numOfCharities) {
+                    setNumOfCharities(listOfCharities.length);
+                    let status = await charitiesContract.getCharity(currentAccount);
+                    setCharityStatus(status[0]);
                     return;
                 }
 
                 let charities = [];
-                for (let i = 0; i < numberOfCharities; i++) {
-                    let ch = await charitiesContract.getCharity(i+1);
-                    let charityName = ch[0];
-                    let charityAddress = ch[1];
+                for (let i = 0; i < listOfCharities.length; i++) {
+                    let beneficiary = listOfCharities[i];
+                    let ch = await charitiesContract.getCharity(beneficiary);
+                    let charityName = ch[1];
                     let charityAmount = ch[2];
 
                     charityAmount = ethers.utils.formatEther(charityAmount)
-                    const charity = {index: i, name: charityName, address: charityAddress, amount: charityAmount};
+                    const charity = {index: i, name: charityName, address: beneficiary, amount: charityAmount};
                     charities.push(charity);
                 }
 
@@ -69,35 +76,32 @@ const DisplayCharities = ({currentAccount, charitiesContract}) => {
 
     return (
         <div>
-            <div className="add-charity-container">
-                <p className="sub-text">
+            {!charityStatus &&
+                <div className="add-charity-container">
+                    <p className="table-header">Register As A Charity</p>
                     <label>Name:
                         <input 
                         type="text" 
                         value={newCharityName}
                         onChange={(e) => setNewCharityName(e.target.value)}
                         />
+                        {addingCharity === false &&
+                            <button className="add-charity-button" onClick={addCharityAction(newCharityName)}>
+                            Register
+                            </button>
+                        }
+                        {addingCharity === true &&
+                            <p className="adding-charity">Registering...</p>
+                        }
                     </label>
-                    
-                    <label>Address:
-                        <input 
-                        type="text" 
-                        value={newCharityAddress}
-                        onChange={(e) => setNewCharityAddress(e.target.value)}
-                        />
-                    </label>
-                </p>
-                {addingCharity === false &&
-                    <button className="add-charity-button" onClick={addCharityAction(newCharityName, newCharityAddress)}>
-                    Add Charity
-                    </button>
-                }
+                </div>
+            }
+            {charityStatus &&
+                <p className="table-header">You Are Registered As A Charity</p>
+            }
 
-                {addingCharity === true &&
-                    <p className="adding-charity">Adding...</p>
-                }
-            </div>
             <div>
+                <p className="table-header">Newest Charities</p>
                 <table className="amount">
                     <thead>
                         <tr>
@@ -107,7 +111,7 @@ const DisplayCharities = ({currentAccount, charitiesContract}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {numOfCharities !==0 && allCharities.map((charity) => {
+                        {numOfCharities !==0 && allCharities.slice(-5).reverse().map((charity) => {
                             return (
                                 <tr key={charity.index}>
                                     <td>{charity.name}</td>

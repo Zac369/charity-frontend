@@ -36,7 +36,7 @@
 
 .container button{
     position: relative;
-    width: 8rem;
+    width: 10rem;
     height: 3rem;
     border: 0.2rem solid #36382E;
     font-size: 2rem;
@@ -71,6 +71,10 @@
 
 .container .trade-button {
     margin: 0 0 1rem 0;
+}
+
+.container .trade-button:disabled {
+    pointer-events: none;
 }
 
 input[type=number]::-webkit-inner-spin-button {

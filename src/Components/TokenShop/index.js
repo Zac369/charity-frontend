@@ -17,7 +17,8 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
         setSelectedTokens(0);
         console.log(amount);
         console.log(option);
-        let weiAmount = ethers.utils.parseEther(amount.toString());
+        try {
+            let weiAmount = ethers.utils.parseEther(amount.toString());
         setTrading(true);
         if (option === "buy") {
             weiAmount = weiAmount/10000;
@@ -34,8 +35,9 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
             const txnSell = await charitiesContract.sell(weiAmount.toString());
             await txnSell.wait();
             setTrading(false);
-        } else {
-            console.log("Error!");
+        }
+        } catch (error) {
+            console.warn('Add Charity Error:', error);
             setTrading(false);
         }
     };
@@ -69,14 +71,24 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
                 <label htmlFor="sell">Sell</label>
             </div>
             <div>
-                <p>Conversion Rate: 1Eth = 10000 Tokens</p>
+                <p>Conversion Rate: 1 Eth = 10000 Tokens</p>
                 <p>Select Number Of Tokens To Trade:</p>
                 <input type="number" min="0" value={selectedTokens} onChange={(e) => setSelectedTokens(e.target.value)}></input>
                 <p>{selectedTokens / 1} Tokens = {selectedTokens / 10000} Eth</p>
-                <button className="trade-button" 
-                onClick={tradeOption && tradeTokens(selectedTokens, tradeOption)}>
-                Trade
-                </button>
+
+                {trading === false &&
+                    <button className="trade-button" 
+                    onClick={tradeOption && tradeTokens(selectedTokens, tradeOption)}>
+                    Trade
+                    </button>
+                }
+
+                {trading === true &&
+                    <button className="trade-button" disabled={true}>
+                    Trading
+                    </button>
+                }
+                
             </div>
         </div>
     )

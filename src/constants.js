@@ -1,6 +1,6 @@
-const CONTRACT_ADDRESS = '0xE2694f18804d11D4b74394d4D104EecfF38a49fD';
+const CONTRACT_ADDRESS = '0xd0d4321D78e50a76170cD40d1b0C01B7bDf98f07';
 
-const TOKEN_ADDRESS = '0x7d7cc0b6175feba744e54e17e3e1674b29dc08f1';
+const TOKEN_ADDRESS = '0xa74c06712e8c1d8e1116c576446e4c637c734be1';
 
 const shortenAddress = (str) => {
     return str.substring(0, 6) + "..." + str.substring(str.length - 4);

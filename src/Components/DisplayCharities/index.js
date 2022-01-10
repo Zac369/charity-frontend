@@ -9,10 +9,13 @@ const DisplayCharities = ({currentAccount, charitiesContract, tokenContract}) =>
     const [newCharityName, setNewCharityName] = useState("");
     const [newCharityAddress, setNewCharityAddress] = useState("");
     const [newCharityAmount, setNewCharityAmount] = useState(0);
+    const [withdrawAmount, setWithdrawAmount] = useState(0);
     const [addingCharity, setAddingCharity] = useState(false);
     const [donatingCharity, setDonatingCharity] = useState(false);
+    const [withdrawingCharity, setWithdrawingCharity] = useState(false);
     const [numOfCharities, setNumOfCharities] = useState(0);
     const [charityStatus, setCharityStatus] = useState(null);
+    const [recievedTokens, setRecievedTokens] = useState(0);
 
     const donateCharityAction = (beneficiary, amount) => async () => {
         setNewCharityAddress("");
@@ -21,7 +24,7 @@ const DisplayCharities = ({currentAccount, charitiesContract, tokenContract}) =>
         tokenBalance = BigNumber.from(tokenBalance);
         tokenBalance = ethers.utils.formatEther(tokenBalance);
         console.log(tokenBalance);
-        if (tokenBalance < amount) {
+        if (Number(tokenBalance) < Number(amount)) {
             console.log("You do not have enough tokens");
             return;
         }
@@ -46,6 +49,32 @@ const DisplayCharities = ({currentAccount, charitiesContract, tokenContract}) =>
         setDonatingCharity(false);
     }
 
+    const withdrawCharityAction = (amount) => async () => {
+        if (amount <= 0) {
+            console.log("Tokens must be greater than 0");
+            return;
+        } 
+        let finalBalance = await charitiesContract.getTokensRecieved(currentAccount);
+        finalBalance = BigNumber.from(finalBalance);
+        finalBalance = ethers.utils.formatEther(finalBalance);
+        if (Number(amount) > Number(finalBalance)) {
+            console.log("You have not recieved enough tokens");
+            return;
+        }
+        setWithdrawAmount(0);
+        try {
+            setWithdrawingCharity(true);
+            let weiAmount = ethers.utils.parseEther(amount.toString());
+            console.log('Withdrawing in progress...');
+            const withdrawTxn = await charitiesContract.withdraw(currentAccount, weiAmount);
+            await withdrawTxn.wait();
+            console.log('withdrawTxn', withdrawTxn);
+        } catch (e) {
+            console.warn('Withdraw Error:', e);
+        }
+        setWithdrawingCharity(false);
+    };
+
     const addCharityAction = (charityName) => async () => {
         if (!newCharityName) {
             console.log("Name must not be empty");
@@ -63,12 +92,32 @@ const DisplayCharities = ({currentAccount, charitiesContract, tokenContract}) =>
             const mintTxn = await charitiesContract.newCharity(currentAccount, charityName);
             await mintTxn.wait();
             console.log('mintTxn:', mintTxn);
-            setNumOfCharities(numOfCharities + 1)
+            setNumOfCharities(numOfCharities + 1);
+            setCharityStatus(true);
         } catch (error) {
             console.warn('Add Charity Error:', error);
         }
         setAddingCharity(false);
     };
+
+    useEffect(() => {
+        const getRecievedTokens = async () => {
+            try {
+                let txn = await charitiesContract.getTokensRecieved(currentAccount);
+                txn = BigNumber.from(txn);
+                let wei = ethers.utils.formatEther(txn);
+                setRecievedTokens(wei);
+            } catch (e) {
+                console.warn('Error fetching tokens:', e);
+                setRecievedTokens(0);
+            }
+        }
+
+        if (charitiesContract && currentAccount) {
+            getRecievedTokens();
+        }
+
+    }, [charitiesContract, currentAccount, withdrawingCharity]);
 
     useEffect(() => {
         const updateCharities = async () => {
@@ -130,7 +179,22 @@ const DisplayCharities = ({currentAccount, charitiesContract, tokenContract}) =>
                 </div>
             }
             {charityStatus &&
-                <p className="table-header">You Are Registered As A Charity</p>
+                <div className="add-charity-container">
+                    <p className="table-header">You Have been donated {recievedTokens} Tokens</p>
+                    {recievedTokens > 0 &&
+                        <label>Amount:
+                            <input 
+                            type="text" 
+                            value={withdrawAmount}
+                            onChange={(e) => setWithdrawAmount(e.target.value)}
+                            />
+                            <button className="add-charity-button" onClick={withdrawCharityAction(withdrawAmount)}>
+                                Withdraw
+                            </button>
+                        </label>
+                    }
+                    
+                </div>
             }
 
             <div className="add-charity-container">

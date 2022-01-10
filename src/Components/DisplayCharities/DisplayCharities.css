@@ -7,6 +7,7 @@ table {
     margin-right: auto;
     margin-top: 4rem;
     width: 50rem;
+    border-collapse: collapse;
 }
 
 .amount th {
@@ -16,10 +17,28 @@ table {
 
 td, th {
     background-color: #EDE6E3;
-    border: 0.1rem solid #999;
-    padding: 0.5rem;
-    border-radius: 0.313rem;
     color: #36382E;
+    padding: 1rem;
+}
+
+td {
+    border-top: 0.01rem solid #36382E;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 1rem;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 1rem;
+}
+
+th:nth-child(3) {
+    border-top-right-radius: 1rem;
+}
+
+th:nth-child(1) {
+    border-top-left-radius: 1rem;
 }
 
 .table-header, .donate-header {

@@ -5,6 +5,7 @@ table {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 4rem;
     width: 50rem;
 }
 
@@ -21,11 +22,15 @@ td, th {
     color: #36382E;
 }
 
-.table-header {
+.table-header, .donate-header {
     font-size: 1.8rem;
     font-weight: bold;
     text-align: center;
     color: #36382E;
+}
+
+.donate-header {
+    margin-top: 3rem;
 }
 
 .sub-text {

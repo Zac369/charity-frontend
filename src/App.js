@@ -130,7 +130,7 @@ const App = () => {
       </nav>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/charities" element={<DisplayCharities currentAccount={currentAccount} charitiesContract={charitiesContract}/>} />
+        <Route path="/charities" element={<DisplayCharities currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
         <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
       </Routes>
       

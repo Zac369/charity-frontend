@@ -1,16 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 
 import './DisplayCharities.css';
 import { shortenAddress } from './../../constants';
 
-const DisplayCharities = ({currentAccount, charitiesContract}) => {
+const DisplayCharities = ({currentAccount, charitiesContract, tokenContract}) => {
     const [allCharities, setAllCharities] = useState([]);
     const [newCharityName, setNewCharityName] = useState("");
+    const [newCharityAddress, setNewCharityAddress] = useState("");
+    const [newCharityAmount, setNewCharityAmount] = useState(0);
     const [addingCharity, setAddingCharity] = useState(false);
+    const [donatingCharity, setDonatingCharity] = useState(false);
     const [numOfCharities, setNumOfCharities] = useState(0);
     const [charityStatus, setCharityStatus] = useState(null);
 
+    const donateCharityAction = (beneficiary, amount) => async () => {
+        setNewCharityAddress("");
+        setNewCharityAmount(0);
+        let tokenBalance = await charitiesContract.getTokenBalance();
+        tokenBalance = BigNumber.from(tokenBalance);
+        tokenBalance = ethers.utils.formatEther(tokenBalance);
+        console.log(tokenBalance);
+        if (tokenBalance < amount) {
+            console.log("You do not have enough tokens");
+            return;
+        }
+        const listOfCharities = await charitiesContract.getCharityList();
+        if (!listOfCharities.includes(beneficiary)) {
+            console.log("Not a valid charity");
+            return;
+        }
+        try {
+            setDonatingCharity(true);
+            let weiAmount = ethers.utils.parseEther(amount.toString());
+            console.log('Approving in progress...');
+            const txnApprove = await tokenContract.approve(charitiesContract.address, weiAmount.toString());
+            await txnApprove.wait();
+            console.log('Donating in progress...');
+            const donateTxn = await charitiesContract.donateToCharity(beneficiary, weiAmount);
+            await donateTxn.wait();
+            console.log('donateTxn', donateTxn);
+        } catch (e) {
+            console.warn('Donation Error:', e);
+        }
+        setDonatingCharity(false);
+    }
 
     const addCharityAction = (charityName) => async () => {
         if (!newCharityName) {
@@ -29,13 +63,12 @@ const DisplayCharities = ({currentAccount, charitiesContract}) => {
             const mintTxn = await charitiesContract.newCharity(currentAccount, charityName);
             await mintTxn.wait();
             console.log('mintTxn:', mintTxn);
-            setAddingCharity(false);
             setNumOfCharities(numOfCharities + 1)
         } catch (error) {
             console.warn('Add Charity Error:', error);
-            setAddingCharity(false);
         }
-      };
+        setAddingCharity(false);
+    };
 
     useEffect(() => {
         const updateCharities = async () => {
@@ -72,7 +105,7 @@ const DisplayCharities = ({currentAccount, charitiesContract}) => {
         if (charitiesContract && currentAccount) {
             updateCharities();
         }
-    }, [charitiesContract, numOfCharities, currentAccount]);
+    }, [charitiesContract, numOfCharities, currentAccount, donatingCharity]);
 
     return (
         <div>
@@ -85,12 +118,12 @@ const DisplayCharities = ({currentAccount, charitiesContract}) => {
                         value={newCharityName}
                         onChange={(e) => setNewCharityName(e.target.value)}
                         />
-                        {addingCharity === false &&
+                        {!addingCharity &&
                             <button className="add-charity-button" onClick={addCharityAction(newCharityName)}>
                             Register
                             </button>
                         }
-                        {addingCharity === true &&
+                        {addingCharity &&
                             <p className="adding-charity">Registering...</p>
                         }
                     </label>
@@ -99,6 +132,32 @@ const DisplayCharities = ({currentAccount, charitiesContract}) => {
             {charityStatus &&
                 <p className="table-header">You Are Registered As A Charity</p>
             }
+
+            <div className="add-charity-container">
+                <p className="donate-header">Donate To Charity</p>
+                <label>Address:
+                    <input 
+                    type="text" 
+                    value={newCharityAddress}
+                    onChange={(e) => setNewCharityAddress(e.target.value)}
+                    />
+                </label>
+                <label>Tokens:
+                    <input 
+                    type="text" 
+                    value={newCharityAmount}
+                    onChange={(e) => setNewCharityAmount(e.target.value)}
+                    />
+                    {!donatingCharity &&
+                        <button className="add-charity-button" onClick={donateCharityAction(newCharityAddress, newCharityAmount)}>
+                        Donate
+                        </button>
+                    }
+                    {donatingCharity &&
+                        <p className="adding-charity">Donating...</p>
+                    }
+                </label>
+            </div>
 
             <div>
                 <p className="table-header">Newest Charities</p>

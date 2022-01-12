@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 
 import './App.css';
-import DisplayCharities from './Components/DisplayCharities';
+import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
 import Home from './Components/Home';
 import TokenShop from './Components/TokenShop';
 import { CONTRACT_ADDRESS, TOKEN_ADDRESS, shortenAddress } from './constants';
@@ -130,7 +130,7 @@ const App = () => {
       </nav>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/charities" element={<DisplayCharities currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+        <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
         <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
       </Routes>
       

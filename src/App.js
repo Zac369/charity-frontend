@@ -7,8 +7,8 @@ import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
 import HomePage from './Components/Home/HomePage';
 import TokenShop from './Components/TokenShop/TokenPage';
 import { CONTRACT_ADDRESS, TOKEN_ADDRESS, shortenAddress } from './constants';
-import Charities from './Utils/Charities.json'; // ABI
-import Token from './Utils/Token.json'; // ABI
+import Charities from './utils/Charities.json'; // ABI
+import Token from './utils/Token.json'; // ABI
 
 const App = () => {
   // State

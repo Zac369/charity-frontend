@@ -61,7 +61,9 @@ function Donate({ charitiesContract, tokenContract }) {
                         </button>
                     }
                     {donatingCharity &&
-                        <p className="adding-charity">Donating...</p>
+                        <button className="add-charity-button" disabled={true}>
+                        Donating
+                        </button>
                     }
                 </label>
         </div>

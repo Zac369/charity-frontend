@@ -10,19 +10,19 @@ table {
     border-collapse: collapse;
 }
 
-.amount th {
+td, th {
+    padding: 1rem;
+}
+
+th {
     background-color: #36382E;
     color: #EDE6E3;
 }
 
-td, th {
-    background-color: #EDE6E3;
-    color: #36382E;
-    padding: 1rem;
-}
-
 td {
     border-top: 0.01rem solid #36382E;
+    background-color: #EDE6E3;
+    color: #36382E;
 }
 
 tr:last-child td:first-child {
@@ -41,7 +41,7 @@ th:nth-child(1) {
     border-top-left-radius: 1rem;
 }
 
-.table-header, .donate-header {
+p {
     font-size: 1.8rem;
     font-weight: bold;
     text-align: center;
@@ -50,14 +50,6 @@ th:nth-child(1) {
 
 .donate-header {
     margin-top: 3rem;
-}
-
-.sub-text {
-    text-align: center;
-    padding: 0 2rem;
-    color: #36382E;
-    font-weight: bold;
-    font-size: 1.2rem;
 }
 
 input {
@@ -76,7 +68,11 @@ label {
     color: #36382E;
 }
 
-.add-charity-button, .adding-charity {
+div {
+    text-align: center;
+}
+
+button {
     width: 13rem;
     height: 2.5rem;
     margin: 2rem auto 2rem;
@@ -90,10 +86,6 @@ label {
     background-color: #36382E;
 }
 
-.add-charity-container {
-    text-align: center;
-}
-
-.add-charity-button:hover {
+button:hover {
     color: white;
 }

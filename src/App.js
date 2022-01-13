@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 
-import './App.css';
+import './Style/Nav.css';
 import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
-import Home from './Components/Home';
-import TokenShop from './Components/TokenShop';
+import HomePage from './Components/Home/HomePage';
+import TokenShop from './Components/TokenShop/TokenPage';
 import { CONTRACT_ADDRESS, TOKEN_ADDRESS, shortenAddress } from './constants';
-import Charities from './utils/Charities.json'; // ABI
-import Token from './utils/Token.json'; // ABI
+import Charities from './Utils/Charities.json'; // ABI
+import Token from './Utils/Token.json'; // ABI
 
 const App = () => {
   // State
@@ -129,7 +129,7 @@ const App = () => {
         
       </nav>
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<HomePage/>} />
         <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
         <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
       </Routes>

@@ -2,11 +2,15 @@
     text-align: center;
     position: relative;
     top: 2rem;
-    width: 25rem;
-    height: 15rem;
+    width: 32rem;
+    height: 27rem;
     margin: auto;
     border-radius: 1rem;
     background-color: #EDE6E3;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
 .header input[type="radio"] {
@@ -56,7 +60,7 @@
 .container p {
     background-color:#EDE6E3;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .container div {
@@ -76,7 +80,3 @@
 .container .trade-button:disabled {
     pointer-events: none;
 }
-
-input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }

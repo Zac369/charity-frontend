@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, ethers } from 'ethers';
 
-import './TokenShop.css';
+import '../../Style/TokenShop.css';
 
 const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
     const [numTokens, setNumTokens] = useState(0);
@@ -13,7 +13,7 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
         if (amount <= 0) {
             console.log("Tokens must be greater than 0");
             return;
-        } 
+        }
         setSelectedTokens(0);
         console.log(amount);
         console.log(option);

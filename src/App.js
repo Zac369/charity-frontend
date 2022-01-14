@@ -109,7 +109,7 @@ const App = () => {
      */
     } else if (currentAccount) {
       return (
-        <p className="connect-wallet-text">{shortenAddress(currentAccount)}</p>
+        <button className="connect-wallet-text" disabled={true}>{shortenAddress(currentAccount)}</button>
       );
     }
   };

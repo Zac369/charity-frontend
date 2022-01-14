@@ -30,28 +30,23 @@
   display:inline-block;
   color: #36382E;
   position: absolute;
-  width: 13rem;
-  padding: 0 0.625rem 0 0.625rem;
+  width: 15rem;
   right: 0.625rem;
-  top: 1.25rem;
+  top: -1rem;
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  border-radius: 0.313rem;
+  border: 0;
+  border-radius: 0.5rem;
   cursor: pointer;
   background-image: linear-gradient(
     to right,
-    #F06449 0%,
-    #DADAD9 50%,
-    #5BC3EB 100%
+    #F06449,
+    #DADAD9,
+    #5BC3EB
   );
 }
 
-p.connect-wallet-text {
-  top: -0.313rem;
-  cursor: auto;
-}
-
-button.connect-wallet-button {
-  width: 14.25rem;
+.connect-wallet-text {
+  pointer-events: none;
 }

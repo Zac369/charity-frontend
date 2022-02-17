@@ -33,11 +33,11 @@ tr:last-child td:last-child {
     border-bottom-right-radius: 1rem;
 }
 
-th:nth-child(3) {
+th:last-child {
     border-top-right-radius: 1rem;
 }
 
-th:nth-child(1) {
+th:first-child {
     border-top-left-radius: 1rem;
 }
 

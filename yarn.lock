@@ -1754,6 +1754,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@mobiscroll/react@https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.13.5.tgz":
+  version "5.13.5"
+  resolved "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.13.5.tgz#f29cf5dd6ee3c12d4a442bc0bbbb45fd3c305416"
+
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz"

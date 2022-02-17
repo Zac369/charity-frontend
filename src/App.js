@@ -6,6 +6,7 @@ import './Style/Nav.css';
 import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
 import HomePage from './Components/Home/HomePage';
 import TokenShop from './Components/TokenShop/TokenPage';
+import FundraisePage from './Components/FundraisePage/FundraisePage';
 import { CONTRACT_ADDRESS, TOKEN_ADDRESS, shortenAddress } from './constants';
 import Charities from './utils/Charities.json'; // ABI
 import Token from './utils/Token.json'; // ABI
@@ -124,6 +125,7 @@ const App = () => {
         <Link className="nav-link" to="/"> Home </Link>
         <Link className="nav-link" to="/charities"> Charities </Link>
         <Link className="nav-link" to="/token">Token Shop</Link>
+        <Link className="nav-link" to="/fundraise">Fundraise</Link>
         
         {renderContent()}
         
@@ -132,6 +134,7 @@ const App = () => {
         <Route path="/" element={<HomePage/>} />
         <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
         <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+        <Route path="/fundraise" element={<FundraisePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
       </Routes>
       
     </Router>

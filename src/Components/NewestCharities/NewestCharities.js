@@ -19,11 +19,11 @@ const NewestCharities = ({ charitiesContract, currentAccount }) => {
                     return;
                 }
 
-                let charities = [];
+                const charities = [];
                 for (let i = 0; i < listOfCharities.length; i++) {
-                    let beneficiary = listOfCharities[i];
-                    let ch = await charitiesContract.getCharity(beneficiary);
-                    let charityName = ch[1];
+                    const beneficiary = listOfCharities[i];
+                    const ch = await charitiesContract.getCharity(beneficiary);
+                    const charityName = ch[1];
                     let charityAmount = ch[2];
 
                     charityAmount = ethers.utils.formatEther(charityAmount)

@@ -1,9 +1,8 @@
 import React from 'react'
-import '../../Style/Home.css'
 
 function Home() {
     return (
-        <div>
+        <div className="text-center text-green-500 font-bold">
             HOME PAGE
         </div>
     )

@@ -30,21 +30,22 @@ const Register = ({ currentAccount, charitiesContract, setCharityStatus }) => {
     };
 
     return (
-        <div>
-            <p className="table-header">Register As A Charity</p>
-            <label>Name:
+        <div className="border-b border-grey pb-5 text-center">
+            <p className="text-xl p-5">Register As A Charity</p>
+            <p className="inline-flex pl-5 text-lg">Name:</p>
+            <label className="p-5">
                 <input 
                 type="text" 
                 value={newCharityName}
                 onChange={(e) => setNewCharityName(e.target.value)}
                 />
                 {!addingCharity &&
-                    <button className="add-charity-button" onClick={registerCharityAction(newCharityName)}>
+                    <button className="ml-5 text-lg border-8 border-blue rounded-lg bg-blue text-gray hover:text-white" onClick={registerCharityAction(newCharityName)}>
                     Register
                     </button>
                 }
                 {addingCharity &&
-                    <p className="adding-charity">Registering...</p>
+                    <p className="pl-5">Registering...</p>
                 }
             </label>
         </div>

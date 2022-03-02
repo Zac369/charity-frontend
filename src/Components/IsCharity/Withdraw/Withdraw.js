@@ -53,19 +53,22 @@ const Withdraw = ({currentAccount, charitiesContract}) => {
     };
 
     return (
-        <div>
-            <p className="table-header">You Have been donated {recievedTokens} Tokens</p>
+        <div className="text-center border-b border-grey py-5">
+            <p className="text-xl pb-5">You Have been donated {recievedTokens} Tokens</p>
             {recievedTokens > 0 &&
-                <label>Amount:
-                    <input 
-                    type="text" 
+                <>
+                <p className="inline px-5 text-lg">Amount:</p>
+                <label>
+                    <input className="text-center"
+                    type="number" 
                     value={withdrawAmount}
                     onChange={(e) => setWithdrawAmount(e.target.value)}
                     />
-                    <button className="add-charity-button" onClick={withdrawCharityAction(withdrawAmount)}>
+                    <button className="ml-5 text-xl border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold" onClick={withdrawCharityAction(withdrawAmount)}>
                         Withdraw
                     </button>
                 </label>
+                </>
             }
         </div>
     )

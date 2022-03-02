@@ -39,8 +39,8 @@ const CreateFundraiser = ({currentAccount, charitiesContract, tokenContract}) =>
     }
 
     return (
-        <div>
-            <p>Create Fundraiser</p>
+        <div className="text-center">
+            <p className="py-5 text-3xl font-bold text-gray">Create Fundraiser</p>
             <label>
                 Title:
                     <input

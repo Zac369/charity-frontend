@@ -40,32 +40,34 @@ function Donate({ charitiesContract, tokenContract }) {
     }
 
     return (
-        <div>
-            <p className="donate-header">Donate To Charity</p>
-                <label>Address:
-                    <input 
-                    type="text" 
-                    value={newCharityAddress}
-                    onChange={(e) => setNewCharityAddress(e.target.value)}
-                    />
-                </label>
-                <label>Tokens:
-                    <input 
-                    type="text" 
-                    value={newCharityAmount}
-                    onChange={(e) => setNewCharityAmount(e.target.value)}
-                    />
-                    {!donatingCharity &&
-                        <button className="add-charity-button" onClick={donateCharityAction(newCharityAddress, newCharityAmount)}>
-                        Donate
-                        </button>
-                    }
-                    {donatingCharity &&
-                        <button className="add-charity-button" disabled={true}>
-                        Donating
-                        </button>
-                    }
-                </label>
+        <div className="border-b border-grey pb-5 text-center">
+            <p className="p-5 text-xl">Donate To Charity</p>
+            <p className="inline px-5 text-lg">Address:</p>
+            <label>
+                <input 
+                type="text"
+                value={newCharityAddress}
+                onChange={(e) => setNewCharityAddress(e.target.value)}
+                />
+            </label>
+            <p className="inline px-5 text-lg">Tokens:</p>
+            <label>
+                <input className="text-center"
+                type="number" 
+                value={newCharityAmount}
+                onChange={(e) => setNewCharityAmount(e.target.value)}
+                />
+                {!donatingCharity &&
+                    <button className="ml-5 text-xl border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold" onClick={donateCharityAction(newCharityAddress, newCharityAmount)}>
+                    Donate
+                    </button>
+                }
+                {donatingCharity &&
+                    <button className="ml-5 text-xl border-8 border-blue rounded-lg bg-blue font-semibold" disabled={true}>
+                    Donating
+                    </button>
+                }
+            </label>
         </div>
     )
 }

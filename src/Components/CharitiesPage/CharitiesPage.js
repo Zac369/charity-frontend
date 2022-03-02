@@ -4,8 +4,6 @@ import NewestCharities from '../NewestCharities/NewestCharities'
 import Donate from '../Donate/Donate'
 import IsCharity from '../IsCharity/IsCharity'
 
-import '../../Style/Charities.css'
-
 const CharitiesPage = ({currentAccount, charitiesContract, tokenContract}) => {
     return (
         <>

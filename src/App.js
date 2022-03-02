@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import logo from './utils/eth-logo.png'
 
-import './Style/Nav.css';
 import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
 import HomePage from './Components/Home/HomePage';
 import TokenShop from './Components/TokenShop/TokenPage';
@@ -99,7 +99,7 @@ const App = () => {
      */
     if (!currentAccount) {
       return (
-          <button className="connect-wallet-button"
+          <button className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/fundraise"
             onClick={connectWalletAction}
           >
             Connect Wallet
@@ -110,7 +110,8 @@ const App = () => {
      */
     } else if (currentAccount) {
       return (
-        <button className="connect-wallet-text" disabled={true}>{shortenAddress(currentAccount)}</button>
+        <button
+          disabled={true}>{shortenAddress(currentAccount)}</button>
       );
     }
   };
@@ -120,24 +121,32 @@ const App = () => {
   }, []);
 
   return (
-    <Router>
-      <nav className="navbar">
-        <Link className="nav-link" to="/"> Home </Link>
-        <Link className="nav-link" to="/charities"> Charities </Link>
-        <Link className="nav-link" to="/token">Token Shop</Link>
-        <Link className="nav-link" to="/fundraise">Fundraise</Link>
+    <div className="bg-silver min-h-screen">
+      <Router>
+        <nav className="bg-gray container flex justify-around py-5 mx-auto text-white text-xl max-w-full">
+          <div>
+            <Link to="/">
+              <img className="h-8 w-auto" src={logo}/>
+            </Link>
+          </div>
+          <div className="flex items-center space-x-12">
+            <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/charities"> Charities </Link>
+            <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/token">Token Shop</Link>
+            <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/fundraise">Fundraise</Link>
+          </div>
+          
+          {renderContent()}
+          
+        </nav>
+        <Routes>
+          <Route path="/" element={<HomePage/>} />
+          <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+          <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+          <Route path="/fundraise" element={<FundraisePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+        </Routes>
         
-        {renderContent()}
-        
-      </nav>
-      <Routes>
-        <Route path="/" element={<HomePage/>} />
-        <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
-        <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
-        <Route path="/fundraise" element={<FundraisePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
-      </Routes>
-      
-    </Router>
+      </Router>
+    </div>
   );
 };
 

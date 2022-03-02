@@ -19,7 +19,7 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
                 const funds = [];
                 for (let i = 0; i < listOfFunds.length; i++) {
                     const fund = listOfFunds[i];
-                    
+
                 }
 
             } catch (error) {
@@ -27,10 +27,10 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
             }
         }
     })
-  
+   
     return (
-    <div>
-        <p>Current Fundraisers</p>
+    <div className="text-center">
+        <p className="py-5 text-2xl font-semibold text-gray">Current Fundraisers</p>
         <table>
             <thead>
                 <tr>

@@ -45,7 +45,9 @@ const Register = ({ currentAccount, charitiesContract, setCharityStatus }) => {
                     </button>
                 }
                 {addingCharity &&
-                    <p className="pl-5">Registering...</p>
+                    <button className="ml-5 text-lg border-8 border-blue rounded-lg bg-blue text-gray" disabled={true}>
+                    Registering
+                    </button>
                 }
             </label>
         </div>

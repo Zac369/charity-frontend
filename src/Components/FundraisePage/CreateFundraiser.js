@@ -11,6 +11,10 @@ const CreateFundraiser = ({currentAccount, charitiesContract, tokenContract}) =>
     const [fundraising, setFundraising] = useState(false);
 
     const addFundAction = (title, description, start, deadline, goal) => async () => {
+        setFundTitle("");
+        setFundDescription("");
+        setFundGoal(0);
+
         const currentTime = Math.round(Date.now()/1000);
 
         if (start === undefined || deadline === undefined || title === "" || description === "" || goal <= 0) {
@@ -21,7 +25,7 @@ const CreateFundraiser = ({currentAccount, charitiesContract, tokenContract}) =>
             console.log("Deadline has already passed");
             return;
         }
-        if (start > deadline) {
+        if (start >= deadline) {
             console.log("Deadline must be after start");
             return;
         }
@@ -39,58 +43,59 @@ const CreateFundraiser = ({currentAccount, charitiesContract, tokenContract}) =>
     }
 
     return (
-        <div className="text-center">
-            <p className="py-5 text-3xl font-bold text-gray">Create Fundraiser</p>
-            <label>
-                Title:
-                    <input
-                    type="text"
-                    value={fundTitle}
-                    onChange={(e) => setFundTitle(e.target.value)}
-                    />
+        <>
+        <p className="py-10 text-3xl font-bold text-gray ml-24">Create Fundraiser</p>
+        <div className="text-center grid ml-24 w-2/3">
+            <p className="flex text-md font-semibold pt-5">Title:</p>
+            <label className="flex py-2 text-xl">
+                <input className="w-2/5"
+                type="text"
+                value={fundTitle}
+                onChange={(e) => setFundTitle(e.target.value)}
+                />
             </label>
-            <label>
-                Description:
-                    <input
-                    type="text"
-                    value={fundDescription}
-                    onChange={(e) => setFundDescription(e.target.value)}
-                    />
+            <p className="flex text-md font-semibold pt-5">Description:</p>
+            <label className="flex py-2 text-xl">
+                <input className="w-2/5"
+                type="text"
+                value={fundDescription}
+                onChange={(e) => setFundDescription(e.target.value)}
+                />
             </label>
-            <label>
-                Start:
-                    <input
-                    type="datetime-local"
-                    onChange={(e) => setFundStart(Math.round(new Date(e.target.value).getTime()/1000))}
-                    />
+            <p className="flex text-md font-semibold pt-5">Start:</p>
+            <label className="flex py-2 text-xl">
+                <input className="w-2/5"
+                type="datetime-local"
+                onChange={(e) => setFundStart(Math.round(new Date(e.target.value).getTime()/1000))}
+                />
             </label>
-            <label>
-                Deadline:
-                    <input
-                    type="datetime-local"
-                    onChange={(e) => setFundDeadline(Math.round(new Date(e.target.value).getTime()/1000))}
-                    />
+            <p className="flex text-md font-semibold pt-5">Deadline:</p>
+            <label className="flex py-2 text-xl">
+                <input className="w-2/5"
+                type="datetime-local"
+                onChange={(e) => setFundDeadline(Math.round(new Date(e.target.value).getTime()/1000))}
+                />
             </label>
-            <label>
-                Goal:
-                    <input
-                    type="number"
-                    value={fundGoal}
-                    onChange={(e) => setFundGoal(e.target.value)}
-                    />
+            <p className="flex text-md font-semibold pt-5">Token Goal:</p>
+            <label className="flex py-2 pb-10 text-xl">
+                <input className="w-2/5 text-center"
+                type="number"
+                value={fundGoal}
+                onChange={(e) => setFundGoal(e.target.value)}
+                />
             </label>
             {!fundraising &&
-                <button onClick={addFundAction(fundTitle, fundDescription, fundStart, fundDeadline, fundGoal)}>
+                <button className="text-2xl border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold w-40" onClick={addFundAction(fundTitle, fundDescription, fundStart, fundDeadline, fundGoal)}>
                 Add Fund
                 </button>
             }
             {fundraising &&
-                <button disabled={true}>
+                <button className="text-2xl border-8 border-blue rounded-lg bg-blue text-gray font-semibold w-40" disabled={true}>
                 Adding Fund
                 </button>
             }
         </div>
-    
+        </>
     )
 }
 

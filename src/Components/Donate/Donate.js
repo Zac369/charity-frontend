@@ -14,6 +14,12 @@ function Donate({ charitiesContract, tokenContract }) {
         tokenBalance = BigNumber.from(tokenBalance);
         tokenBalance = ethers.utils.formatEther(tokenBalance);
         console.log(tokenBalance);
+
+        if (amount <= 0) {
+            console.log("You cannot donate 0 tokens");
+            return;
+        }
+
         if (Number(tokenBalance) < Number(amount)) {
             console.log("You do not have enough tokens");
             return;
@@ -27,7 +33,7 @@ function Donate({ charitiesContract, tokenContract }) {
             setDonatingCharity(true);
             let weiAmount = ethers.utils.parseEther(amount.toString());
             console.log('Approving in progress...');
-            const txnApprove = await tokenContract.approve(charitiesContract.address, weiAmount.toString());
+            const txnApprove = await tokenContract.approve(charitiesContract.address, weiAmount);
             await txnApprove.wait();
             console.log('Donating in progress...');
             const donateTxn = await charitiesContract.donateToCharity(beneficiary, weiAmount);
@@ -44,7 +50,7 @@ function Donate({ charitiesContract, tokenContract }) {
             <p className="p-5 text-xl">Donate To Charity</p>
             <p className="inline px-5 text-lg">Address:</p>
             <label>
-                <input 
+                <input className="text-center"
                 type="text"
                 value={newCharityAddress}
                 onChange={(e) => setNewCharityAddress(e.target.value)}

@@ -16,7 +16,6 @@ const NewestCharities = ({ charitiesContract, currentAccount }) => {
                 // used when page first loads
                 if(listOfCharities.length > numOfCharities) {
                     setNumOfCharities(listOfCharities.length);
-                    return;
                 }
 
                 const charities = [];
@@ -26,11 +25,15 @@ const NewestCharities = ({ charitiesContract, currentAccount }) => {
                     const charityName = ch[1];
                     let charityAmount = ch[2];
 
-                    charityAmount = ethers.utils.formatEther(charityAmount)
-                    const charity = {index: i, name: charityName, address: beneficiary, amount: charityAmount};
+                    charityAmount = ethers.utils.formatEther(charityAmount);
+                    const charity = {
+                        index: i,
+                        name: charityName,
+                        address: beneficiary,
+                        amount: charityAmount
+                    };
                     charities.push(charity);
                 }
-
                 setAllCharities(charities);
             
             } catch (error) {
@@ -41,18 +44,18 @@ const NewestCharities = ({ charitiesContract, currentAccount }) => {
         if (charitiesContract && currentAccount) {
             updateCharities();
         }
-    }, [charitiesContract, numOfCharities, currentAccount]);
+    }, [charitiesContract, currentAccount]);
 
     return (
         <>
         <div className="text-center">
             <p className="p-5 text-xl">Newest Charities</p>
         </div>
-        <div className="flex flex-col mx-2">
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="flex flex-col mx-2 justify-center items-center">
+            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 min-w-full">
                 <div className="pt-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="shadow overflow-hidden border-y border-gray sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray">
+                        <table className="divide-y divide-gray min-w-full">
                             <thead>
                                 <tr className="bg-gray">
                                     <th className="px-6 py-3 text-left text-2xl font-medium text-white uppercase tracking-wider">Charity</th>

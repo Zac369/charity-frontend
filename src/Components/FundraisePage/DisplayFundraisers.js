@@ -70,7 +70,7 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
 
                 const funds = [];
                 for (let i = 0; i < listOfFunds.length; i++) {
-                    const f = await charitiesContract.getFund(i+1);
+                    const f = await charitiesContract.getFund(i);
                     const fundOwner = f[0];
                     const fundTitle = f[1];
                     const fundDescription = f[2];
@@ -78,6 +78,7 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
                     let fundDeadline = f[4];
                     let fundGoal = f[5];
                     let fundBalance = f[6];
+                    let fundImage = f[7];
 
                     fundGoal = ethers.utils.formatEther(fundGoal);
                     fundBalance = ethers.utils.formatEther(fundBalance);
@@ -92,7 +93,8 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
                         start: fundStart,
                         deadline: fundDeadline,
                         goal: fundGoal,
-                        balance: fundBalance
+                        balance: fundBalance,
+                        image: fundImage
                     };
                     funds.push(fund);
                 }
@@ -107,7 +109,7 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
             updateFundraisers();
         }
 
-    }, [charitiesContract, currentAccount])
+    }, [charitiesContract, currentAccount, numOfFundraisers])
    
     return (
         <>
@@ -119,7 +121,8 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
             <div className="mt-4 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                 {allFundraisers.map((fund) => (
                     <div key={fund.index} className="group relative bg-white rounded-xl p-2">
-                        <div className="w-full min-h-80 bg-blue bg-opacity-20 aspect-w-1 aspect-h-1 rounded-xl overflow-y-auto no-scrollbar lg:h-80 lg:aspect-none">
+                        <img className="pb-4 pt-2 object-cover h-64 w-96" src={`https://ipfs.infura.io/ipfs/${fund.image}`} alt=""  />
+                        <div className="w-full min-h-80 bg-blue bg-opacity-20 aspect-w-1 aspect-h-1 rounded-b-xl overflow-y-auto no-scrollbar lg:h-80 lg:aspect-none">
                             <h1 className="text-2xl font-semibold text-gray p-3">{fund.title}</h1>
                             <h2 className="text-l font-semibold text-gray sm:mt-12 lg:mt-4 mt-12 p-3">{fund.description}</h2>
                         </div>

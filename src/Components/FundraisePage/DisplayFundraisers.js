@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { BigNumber, ethers } from 'ethers'
+import React, { useEffect, useState } from 'react';
+import { BigNumber, ethers } from 'ethers';
 
-const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) => {
+const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, allFundraisers, donatingFund, setDonatingFund}) => {
   
-    const [allFundraisers, setAllFundraisers] = useState([]);
-    const [numOfFundraisers, setNumOfFundraisers] = useState(0);
-    const [donatingFund, setDonatingFund] = useState(false);
     const [donatingAmount, setDonatingAmount] = useState(0);
-    const [currentFund, setCurrentFund] = useState(null);
 
     const donateFundAction = (index) => async () => {
-        console.log(index);
-        const amount = 5;
-        console.log(amount);
+        const amount = 10;
         setDonatingAmount(0);
 
         let tokenBalance = await charitiesContract.getTokenBalance();
@@ -39,7 +33,7 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
             const txnApprove = await tokenContract.approve(charitiesContract.address, weiAmount.toString());
             await txnApprove.wait();
             console.log('Donating in progress...');
-            const donateTxn = await charitiesContract.pledge(index + 1, weiAmount);
+            const donateTxn = await charitiesContract.pledge(index, weiAmount);
             await donateTxn.wait();
             console.log('donateTxn', donateTxn);
         } catch (e) {
@@ -48,74 +42,10 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract}) 
         setDonatingFund(false);
     }
 
-    const unixToDate = (unix) => {
-        const milliseconds = unix * 1000
-
-        const dateObject = new Date(milliseconds)
-
-        const humanDateFormat = dateObject.toLocaleString();
-
-        return humanDateFormat;
-    }
-
-    useEffect(() => {
-        const updateFundraisers = async () => {
-            try {
-                const listOfFunds = await charitiesContract.getFundList();
-
-                // used when page first loads
-                if(listOfFunds.length > numOfFundraisers) {
-                    setNumOfFundraisers(listOfFunds.length);
-                }
-
-                const funds = [];
-                for (let i = 0; i < listOfFunds.length; i++) {
-                    const f = await charitiesContract.getFund(i);
-                    const fundOwner = f[0];
-                    const fundTitle = f[1];
-                    const fundDescription = f[2];
-                    let fundStart = f[3];
-                    let fundDeadline = f[4];
-                    let fundGoal = f[5];
-                    let fundBalance = f[6];
-                    let fundImage = f[7];
-
-                    fundGoal = ethers.utils.formatEther(fundGoal);
-                    fundBalance = ethers.utils.formatEther(fundBalance);
-                    fundStart = unixToDate(fundStart);
-                    fundDeadline = unixToDate(fundDeadline);
-
-                    const fund = {
-                        index: i,
-                        owner: fundOwner,
-                        title: fundTitle,
-                        description: fundDescription,
-                        start: fundStart,
-                        deadline: fundDeadline,
-                        goal: fundGoal,
-                        balance: fundBalance,
-                        image: fundImage
-                    };
-                    funds.push(fund);
-                }
-                setAllFundraisers(funds);
-
-            } catch (error) {
-                console.error('Something went wrong fetching fundraisers:', error);
-            }
-        }
-
-        if (charitiesContract && currentAccount) {
-            updateFundraisers();
-        }
-
-    }, [charitiesContract, currentAccount, numOfFundraisers])
-   
     return (
         <>
-        <div className="text-center top-20 py-1 right-0 absolute w-3/5">
-            <p className="py-10 text-3xl font-bold text-gray w-1/2 inline-flex">Top Fundraiser</p>
-        </div>
+        
+        
         <div className="py-10 mx-24">
             <p className="py-10 text-3xl font-bold text-gray">Active Fundraisers</p>
             <div className="mt-4 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

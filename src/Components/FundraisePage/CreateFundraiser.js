@@ -53,7 +53,7 @@ const CreateFundraiser = ({currentAccount, charitiesContract, tokenContract}) =>
 
     return (
         <>
-        <p className="py-10 text-3xl font-bold text-gray ml-24">Create Fundraiser</p>
+        <p className="py-8 text-3xl font-bold text-gray ml-24">Create Fundraiser</p>
         <div className="text-center grid ml-24 w-2/3">
             <p className="flex text-md font-semibold pt-5">Title:</p>
             <label className="flex py-2 text-xl">
@@ -98,13 +98,15 @@ const CreateFundraiser = ({currentAccount, charitiesContract, tokenContract}) =>
                 />
             </label>
 
-            <p className="flex text-md font-semibold">Reward Image:</p>
-            <label className="flex py-2 pb-10 text-xl">
-            <input
-                type="file"
-                onChange={(e) => setFundImage(e.target.files[0])}
-            />
-            </label>
+            <div className="w-2/5">
+                <p className="flex text-md font-semibold">Reward Image:</p>
+                <label className="flex py-2 pb-10 text-xl">
+                <input className="hover:cursor-pointer"
+                    type="file"
+                    onChange={(e) => setFundImage(e.target.files[0])}
+                />
+                </label>
+            </div>
 
             {!fundraising &&
                 <button className="text-2xl border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold w-40" onClick={addFundAction(fundTitle, fundDescription, fundStart, fundDeadline, fundGoal, fundImage)}>

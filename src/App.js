@@ -7,12 +7,14 @@ import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
 import HomePage from './Components/Home/HomePage';
 import TokenShop from './Components/TokenShop/TokenPage';
 import FundraisePage from './Components/FundraisePage/FundraisePage';
+import ProfilePage from './Components/Profile/ProfilePage';
 import { CONTRACT_ADDRESS, TOKEN_ADDRESS, shortenAddress } from './constants';
 import Charities from './utils/Charities.json'; // ABI
 import Token from './utils/Token.json'; // ABI
 
 const App = () => {
   // State
+  const [charityStatus, setCharityStatus] = useState(null);
   const [currentAccount, setCurrentAccount] = useState(null);
   const [charitiesContract, setCharitiesContract] = useState(null);
   const [tokenContract, setTokenContract] = useState(null);
@@ -93,7 +95,7 @@ const App = () => {
   };
 
   // Render Methods
-  const renderContent = () => {
+  const renderLogin = () => {
     /*
      * User Is Not Logged In
      */
@@ -120,29 +122,47 @@ const App = () => {
     checkIfWalletIsConnected();
   }, []);
 
+  useEffect(() => {
+    const getCharityStatus = async () => {
+        try {
+            let status = await charitiesContract.getCharity(currentAccount);
+            setCharityStatus(status[0]);
+        } catch (e) {
+            console.warn(e);
+        }
+    }
+
+    if (charitiesContract && currentAccount) {
+        getCharityStatus();
+    }
+
+}, [charitiesContract, currentAccount]);
+
   return (
     <div className="bg-silver min-h-screen">
       <Router>
         <nav className="bg-gray container flex justify-around py-5 mx-auto text-white text-xl max-w-full">
           <div>
             <Link to="/">
-              <img className="h-8 w-auto" src={logo}/>
+              <img className="h-14 w-auto hover:bg-orange rounded-md border-8 border-gray hover:border-orange" src={logo} alt=""/>
             </Link>
           </div>
           <div className="flex items-center space-x-12">
             <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/charities"> Charities </Link>
             <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/token">Token Shop</Link>
             <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/fundraise">Fundraise</Link>
+            <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/profile">Profile</Link>
           </div>
           
-          {renderContent()}
+          {renderLogin()}
           
         </nav>
         <Routes>
           <Route path="/" element={<HomePage/>} />
-          <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+          <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} setCharityStatus={setCharityStatus} />} />
           <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
-          <Route path="/fundraise" element={<FundraisePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
+          <Route path="/fundraise" element={<FundraisePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} />} />
+          <Route path="/profile" element={<ProfilePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} />} />
         </Routes>
         
       </Router>

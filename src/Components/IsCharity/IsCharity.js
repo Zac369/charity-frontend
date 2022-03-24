@@ -2,25 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Withdraw from './Withdraw/Withdraw';
 import Register from './Register/Register';
 
-const IsCharity = ({currentAccount, charitiesContract}) => {
-
-    const [charityStatus, setCharityStatus] = useState(null);
-
-    useEffect(() => {
-        const getCharityStatus = async () => {
-            try {
-                let status = await charitiesContract.getCharity(currentAccount);
-                setCharityStatus(status[0]);
-            } catch (e) {
-                console.warn(e);
-            }
-        }
-
-        if (charitiesContract && currentAccount) {
-            getCharityStatus();
-        }
-
-    }, [charitiesContract, currentAccount]);
+const IsCharity = ({currentAccount, charitiesContract, charityStatus, setCharityStatus}) => {
 
     return (
         <div>

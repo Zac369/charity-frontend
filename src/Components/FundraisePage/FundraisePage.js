@@ -1,37 +1,97 @@
-import React, { useEffect, useState } from 'react'
-import Register from '../IsCharity/Register/Register'
+import React, { useEffect, useState } from 'react';
+import {ethers } from 'ethers'
 import CreateFundraiser from './CreateFundraiser';
 import DisplayFundraisers from './DisplayFundraisers';
+import YourFundraisers from './YourFundraisers';
 
-const FundraisePage = ({currentAccount, charitiesContract, tokenContract}) => {
+const FundraisePage = ({currentAccount, charitiesContract, tokenContract, charityStatus}) => {
 
-    const [charityStatus, setCharityStatus] = useState(null);
+    const [allFundraisers, setAllFundraisers] = useState([]);
+    const [yourFundraisers, setYourFundraisers] = useState([]);
+    const [numOfFundraisers, setNumOfFundraisers] = useState(0);
+    const [donatingFund, setDonatingFund] = useState(false);
 
     useEffect(() => {
-        const getCharityStatus = async () => {
+        const updateFundraisers = async () => {
             try {
-                let status = await charitiesContract.getCharity(currentAccount);
-                setCharityStatus(status[0]);
-            } catch (e) {
-                console.warn(e);
+                const listOfFunds = await charitiesContract.getFundList();
+
+                // used when page first loads
+                if(listOfFunds.length > numOfFundraisers) {
+                    setNumOfFundraisers(listOfFunds.length);
+                }
+
+                const funds = [];
+                const yourFunds = [];
+
+                for (let i = 0; i < listOfFunds.length; i++) {
+                    const f = await charitiesContract.getFund(i);
+                    const fundOwner = f[0];
+                    const fundTitle = f[1];
+                    const fundDescription = f[2];
+                    let fundStart = f[3];
+                    let fundDeadline = f[4];
+                    let fundGoal = f[5];
+                    let fundBalance = f[6];
+                    let fundImage = f[7];
+                    let fundClaimed = f[8];
+
+                    fundGoal = ethers.utils.formatEther(fundGoal);
+                    fundBalance = ethers.utils.formatEther(fundBalance);
+                    fundStart = unixToDate(fundStart);
+                    fundDeadline = unixToDate(fundDeadline);
+
+                    const fund = {
+                        index: i,
+                        owner: fundOwner,
+                        title: fundTitle,
+                        description: fundDescription,
+                        start: fundStart,
+                        deadline: fundDeadline,
+                        goal: fundGoal,
+                        balance: fundBalance,
+                        image: fundImage,
+                        claimed: fundClaimed
+                    };
+                    funds.push(fund);
+                    if (fund.owner.toUpperCase() === currentAccount.toUpperCase()) {
+                        yourFunds.push(fund);
+                    }
+                }
+                setAllFundraisers(funds);
+                setYourFundraisers(yourFunds);
+
+            } catch (error) {
+                console.error('Something went wrong fetching fundraisers:', error);
             }
         }
 
         if (charitiesContract && currentAccount) {
-            getCharityStatus();
+            updateFundraisers();
         }
 
-    }, [charitiesContract, currentAccount]);
+    }, [charitiesContract, currentAccount, numOfFundraisers, donatingFund]);
+
+    const unixToDate = (unix) => {
+        const milliseconds = unix * 1000
+
+        const dateObject = new Date(milliseconds)
+
+        const humanDateFormat = dateObject.toLocaleString();
+
+        return humanDateFormat;
+    }
 
     return (
         <div className="fundraise-container">
-            {!charityStatus &&
-                < Register currentAccount={currentAccount} charitiesContract={charitiesContract} setCharityStatus={setCharityStatus} />
-            }
             {charityStatus &&
+            <>
                 < CreateFundraiser currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} />
+                < YourFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} allFundraisers={allFundraisers} yourFundraisers={yourFundraisers} />
+            </>
             }
-            < DisplayFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} />
+            < DisplayFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} allFundraisers={allFundraisers} donatingFund={donatingFund} setDonatingFund={setDonatingFund} />
+            
         </div>
     )
 }

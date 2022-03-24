@@ -44,7 +44,7 @@ const NewestCharities = ({ charitiesContract, currentAccount }) => {
         if (charitiesContract && currentAccount) {
             updateCharities();
         }
-    }, [charitiesContract, currentAccount]);
+    }, [charitiesContract, currentAccount, numOfCharities]);
 
     return (
         <>

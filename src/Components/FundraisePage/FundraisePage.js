@@ -3,11 +3,13 @@ import {ethers } from 'ethers'
 import CreateFundraiser from './CreateFundraiser';
 import DisplayFundraisers from './DisplayFundraisers';
 import YourFundraisers from './YourFundraisers';
+import DonatedToFundraisers from './DonatedToFundraisers';
 
 const FundraisePage = ({currentAccount, charitiesContract, tokenContract, charityStatus}) => {
 
     const [allFundraisers, setAllFundraisers] = useState([]);
     const [yourFundraisers, setYourFundraisers] = useState([]);
+    const [donatedToFundraisers, setDonatedToFundraisers] = useState([]);
     const [numOfFundraisers, setNumOfFundraisers] = useState(0);
     const [donatingFund, setDonatingFund] = useState(false);
 
@@ -23,6 +25,7 @@ const FundraisePage = ({currentAccount, charitiesContract, tokenContract, charit
 
                 const funds = [];
                 const yourFunds = [];
+                const donatedToFunds = [];
 
                 for (let i = 0; i < listOfFunds.length; i++) {
                     const f = await charitiesContract.getFund(i);
@@ -57,20 +60,26 @@ const FundraisePage = ({currentAccount, charitiesContract, tokenContract, charit
                     if (fund.owner.toUpperCase() === currentAccount.toUpperCase()) {
                         yourFunds.push(fund);
                     }
+                    const amountUserDonated = await charitiesContract.getAmountDonatedToFund(currentAccount, i);
+                    if (amountUserDonated > 0) {
+                        donatedToFunds.push(fund);
+                    }
                 }
                 setAllFundraisers(funds);
                 setYourFundraisers(yourFunds);
+                setDonatedToFundraisers(donatedToFunds);
 
             } catch (error) {
                 console.error('Something went wrong fetching fundraisers:', error);
             }
+            
         }
 
         if (charitiesContract && currentAccount) {
             updateFundraisers();
         }
 
-    }, [charitiesContract, currentAccount, numOfFundraisers, donatingFund]);
+    }, [charitiesContract, currentAccount, numOfFundraisers, donatedToFundraisers]);
 
     const unixToDate = (unix) => {
         const milliseconds = unix * 1000
@@ -90,8 +99,12 @@ const FundraisePage = ({currentAccount, charitiesContract, tokenContract, charit
                 < YourFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} allFundraisers={allFundraisers} yourFundraisers={yourFundraisers} />
             </>
             }
-            < DisplayFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} allFundraisers={allFundraisers} donatingFund={donatingFund} setDonatingFund={setDonatingFund} />
-            
+            <div>
+            < DonatedToFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} donatedToFundraisers={donatedToFundraisers} allFundraisers={allFundraisers} />
+            </div>
+            <div>
+            < DisplayFundraisers currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} allFundraisers={allFundraisers} donatingFund={donatingFund} setDonatingFund={setDonatingFund} donatedToFundraisers={donatedToFundraisers} />
+            </div>
         </div>
     )
 }

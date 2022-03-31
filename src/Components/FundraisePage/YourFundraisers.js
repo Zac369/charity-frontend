@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 function YourFundraisers({currentAccount, charitiesContract, tokenContract, allFundraisers, yourFundraisers}) {
 
     const [charityStatus, setCharityStatus] = useState(null);
+    const [claiming, setClaiming] = useState(false);
 
     useEffect(() => {
         const getCharityStatus = async () => {
@@ -21,28 +22,53 @@ function YourFundraisers({currentAccount, charitiesContract, tokenContract, allF
     }, [charitiesContract, currentAccount]);
 
     const claimFundAction = (index) => async () => {
+        setClaiming(true);
+
+        try {
+            console.log(`Claiming fund: ${index}`);
+            let claimTxn = await charitiesContract.claim(index);
+            await claimTxn.wait();
+            console.log(`Claimed fund: ${index}`);
+            console.log(claimTxn);
+        } catch (error) {
+            console.log(error);
+        }
         
+        setClaiming(false);
     }
 
     const activeFund = (fundIndex) => {
         const fundDeadline = allFundraisers[fundIndex].deadline;
         const fundClaimed = allFundraisers[fundIndex].claimed
         const currentDate = new Date().toLocaleString();
+        const fundBalance = yourFundraisers[fundIndex].balance;
+        const fundGoal = allFundraisers[fundIndex].goal;
+
         if (currentDate > fundDeadline) {
             return (
                 <div>
-                    <p className="inline-block">Ended</p>
                     {fundClaimed &&
                         <div className="inline-block">
+                            <p className="inline-block">Ended</p>
                             <button disabled={true} className="ml-2 border-8 border-blue rounded-lg bg-blue font-semibold">Claimed</button>
                         </div>
                     }
-                    {!fundClaimed &&
+                    {!fundClaimed && (fundBalance >= fundGoal) &&
                         <div className="inline-block">
-                        <button className="ml-2 border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold" value={fundIndex} onClick={(async (e) => await claimFundAction(e.target.value)())}>Claim</button>
-                    </div>
+                            <p className="inline-block">Ended</p>
+                            {!claiming &&
+                            <button className="ml-2 border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold" value={fundIndex} onClick={(async (e) => await claimFundAction(e.target.value)())}>Claim</button>
+                            }
+                            {claiming &&
+                            <button className="ml-2 border-8 border-blue rounded-lg bg-blue text-gray font-semibold" disabled={true}>Claiming</button>
+                            }
+                        </div>
                     }
-                    
+                    {!fundClaimed && (fundBalance < fundGoal) &&
+                        <div className="inline-block">
+                            <p>Failed</p>
+                        </div>
+                    }
                 </div>
             )
         } else {

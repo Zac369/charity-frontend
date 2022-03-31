@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, ethers } from 'ethers';
 
-const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, allFundraisers, donatingFund, setDonatingFund}) => {
+const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, allFundraisers, donatingFund, setDonatingFund, donatedToFundraisers}) => {
   
     const [donatingAmount, setDonatingAmount] = useState(0);
 
@@ -42,15 +42,23 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, a
         setDonatingFund(false);
     }
 
+    const unixToDate = (unix) => {
+        const dateObject = new Date(unix)
+
+        const humanDateFormat = dateObject.toLocaleString();
+
+        return humanDateFormat;
+    }
+
     return (
         <>
-        
-        
         <div className="py-10 mx-24">
             <p className="py-10 text-3xl font-bold text-gray">Active Fundraisers</p>
             <div className="mt-4 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                {allFundraisers.map((fund) => (
-                    <div key={fund.index} className="group relative bg-white rounded-xl p-2">
+                {allFundraisers.map((fund) => {
+                    if (fund.deadline > unixToDate(Date.now())) {
+                        return (
+                            <div key={fund.index} className="group relative bg-white rounded-xl p-2">
                         <img className="pb-4 pt-2 object-cover h-64 w-96" src={`https://ipfs.infura.io/ipfs/${fund.image}`} alt=""  />
                         <div className="w-full min-h-80 bg-blue bg-opacity-20 aspect-w-1 aspect-h-1 rounded-b-xl overflow-y-auto no-scrollbar lg:h-80 lg:aspect-none">
                             <h1 className="text-2xl font-semibold text-gray p-3">{fund.title}</h1>
@@ -82,7 +90,13 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, a
                             </div>
                         </div>
                     </div>
-                ))}
+                        )
+                    } else {
+                        return (
+                            <div></div>
+                        )
+                    }
+                })}
             </div>
         </div>
         </>

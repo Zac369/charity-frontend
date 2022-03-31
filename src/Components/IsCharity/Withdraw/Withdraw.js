@@ -54,7 +54,7 @@ const Withdraw = ({currentAccount, charitiesContract}) => {
 
     return (
         <div className="text-center border-b border-grey py-5">
-            <p className="text-xl pb-5">You Have been donated {recievedTokens} Tokens</p>
+            <p className="text-xl py-3">You Have been donated {recievedTokens} Tokens</p>
             {recievedTokens > 0 &&
                 <>
                 <p className="inline px-5 text-lg">Amount:</p>

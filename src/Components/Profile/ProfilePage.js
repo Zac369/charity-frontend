@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BigNumber, ethers } from 'ethers';
+import { CONTRACT_ADDRESS } from '../../constants';
 
 const ProfilePage = ({currentAccount, charitiesContract, tokenContract, charityStatus}) => {
 
@@ -47,14 +48,6 @@ const ProfilePage = ({currentAccount, charitiesContract, tokenContract, charityS
       updateUsersNFTIDs();
     }
   }, [charitiesContract, currentAccount, usersNFTs.length]);
-
-  const viewOpensea = (index) => async () => {
-    const nft = usersNFTs[index];
-    
-    console.log(nft);
-
-    window.open(`https://testnets.opensea.io//assets/mumbai/${currentAccount}/${nft.id}`, '_blank');
-  }
   
 
   return (
@@ -66,10 +59,9 @@ const ProfilePage = ({currentAccount, charitiesContract, tokenContract, charityS
                     <div className="rounded-lg">
                         <h1 className="text-3xl font-semibold text-gray pt-3 text-center">{nft.name}</h1>
                     </div>
-                    <img className="pt-8 pb-4 object-cover mx-auto" src={`https://ipfs.infura.io/ipfs/${nft.image}`} alt=""  />
-                    <h1 className="pb-4 text-xl font-semibold text-gray pt-3 text-center">{`You Donated: ${nft.amount} Tokens`}</h1>
-                    <div className="rounded-lg bg-blue grid">
-                        <button className="text-xl font-semibold text-gray p-3 text-center" value={nft.index} onClick={(async (e) => await viewOpensea(e.target.value)())}>View on OpenSea</button>
+                    <img className="pt-8 object-cover w-full h-96 mx-auto" src={`https://ipfs.infura.io/ipfs/${nft.image}`} alt=""  />
+                    <div className="rounded-b-lg bg-blue grid">
+                        <h1 className="pb-4 text-xl font-semibold text-gray pt-3 text-center">{`You Donated: ${nft.amount} Tokens`}</h1>
                     </div>
                 </div>
             ))}

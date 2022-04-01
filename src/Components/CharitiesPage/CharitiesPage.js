@@ -9,7 +9,7 @@ const CharitiesPage = ({currentAccount, charitiesContract, tokenContract, charit
         <>
             < IsCharity currentAccount={currentAccount} charitiesContract={charitiesContract} charityStatus={charityStatus} setCharityStatus={setCharityStatus} />
             < Donate charitiesContract={charitiesContract} tokenContract={tokenContract} />
-            < NewestCharities currentAccount={currentAccount} charitiesContract={charitiesContract} />
+            < NewestCharities currentAccount={currentAccount} charitiesContract={charitiesContract} charityStatus={charityStatus} />
         </>
     );
 };

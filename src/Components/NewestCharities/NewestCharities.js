@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 
 import { shortenAddress } from './../../constants'
 
-const NewestCharities = ({ charitiesContract, currentAccount }) => {
+const NewestCharities = ({ charitiesContract, currentAccount, charityStatus }) => {
 
     const [allCharities, setAllCharities] = useState([]);
     const [numOfCharities, setNumOfCharities] = useState(0);
@@ -44,7 +44,7 @@ const NewestCharities = ({ charitiesContract, currentAccount }) => {
         if (charitiesContract && currentAccount) {
             updateCharities();
         }
-    }, [charitiesContract, currentAccount, numOfCharities]);
+    }, [charitiesContract, currentAccount, numOfCharities, charityStatus]);
 
     return (
         <>

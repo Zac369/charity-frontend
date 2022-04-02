@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
 import logo from './utils/eth-logo.png'
 
 import CharitiesPage from './Components/CharitiesPage/CharitiesPage';
-import HomePage from './Components/Home/HomePage';
 import TokenShop from './Components/TokenShop/TokenPage';
 import FundraisePage from './Components/FundraisePage/FundraisePage';
 import ProfilePage from './Components/Profile/ProfilePage';
@@ -148,7 +147,7 @@ const App = () => {
             </Link>
           </div>
           <div className="flex items-center space-x-12">
-            <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/charities"> Charities </Link>
+            <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/"> Charities </Link>
             <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/token">Token Shop</Link>
             <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/fundraise">Fundraise</Link>
             <Link className="hover:bg-orange rounded-md border-8 border-gray hover:border-orange" to="/profile">Profile</Link>
@@ -158,8 +157,7 @@ const App = () => {
           
         </nav>
         <Routes>
-          <Route path="/" element={<HomePage/>} />
-          <Route path="/charities" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} setCharityStatus={setCharityStatus} />} />
+          <Route path="/" element={<CharitiesPage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} setCharityStatus={setCharityStatus} />} />
           <Route path="/token" element={<TokenShop currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract}/>} />
           <Route path="/fundraise" element={<FundraisePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} />} />
           <Route path="/profile" element={<ProfilePage currentAccount={currentAccount} charitiesContract={charitiesContract} tokenContract={tokenContract} charityStatus={charityStatus} />} />

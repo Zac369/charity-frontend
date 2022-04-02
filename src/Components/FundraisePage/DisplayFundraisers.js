@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import { BigNumber, ethers } from 'ethers';
 
 const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, allFundraisers, donatingFund, setDonatingFund, donatedToFundraisers}) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Withdraw from './Withdraw/Withdraw';
 import Register from './Register/Register';
 

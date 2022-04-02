@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BigNumber, ethers } from 'ethers';
-import { CONTRACT_ADDRESS } from '../../constants';
+import { ethers } from 'ethers';
 
 const ProfilePage = ({currentAccount, charitiesContract, tokenContract, charityStatus}) => {
 

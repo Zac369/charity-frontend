@@ -92,7 +92,7 @@ const TokenShop = ({currentAccount, charitiesContract, tokenContract}) => {
                     }
 
                     {trading === true &&
-                        <button className="text-2xl border-8 border-blue rounded-lg bg-blue text-gray hover:text-white font-semibold w-40" disabled={true}>
+                        <button className="text-2xl border-8 border-blue rounded-lg bg-blue text-gray font-semibold w-40" disabled={true}>
                         Trading
                         </button>
                     }

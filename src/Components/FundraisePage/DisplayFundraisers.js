@@ -149,13 +149,24 @@ const DisplayFundraisers = ({currentAccount, charitiesContract, tokenContract, a
                         onChange={(e) => setDonatingAmount(e.target.value)}
                         />
                     </label>
-                  <button
-                    className="bg-blue text-gray active:bg-blue font-bold uppercase text-m px-6 py-3 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:text-white"
-                    type="button"
-                    onClick={donateFundAction(donatingAmount)}
-                  >
-                    Donate
-                  </button>
+                    {!donatingFund &&
+                        <button
+                            className="bg-blue text-gray active:bg-blue font-bold uppercase text-m px-6 py-3 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:text-white"
+                            type="button"
+                            onClick={donateFundAction(donatingAmount)}
+                        >
+                            Donate
+                        </button>
+                    }
+                    {donatingFund &&
+                        <button
+                            className="bg-blue text-gray active:bg-blue font-bold uppercase text-m px-6 py-3 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            type="button"
+                            disabled={true}
+                        >
+                            Donating
+                        </button>
+                    }
                 </div>
               </div>
             </div>

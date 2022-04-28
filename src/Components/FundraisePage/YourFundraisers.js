@@ -41,7 +41,12 @@ function YourFundraisers({currentAccount, charitiesContract, tokenContract, allF
         const fundDeadline = allFundraisers[fundIndex].deadline;
         const fundClaimed = allFundraisers[fundIndex].claimed
         const currentDate = new Date().toLocaleString();
-        const fundBalance = yourFundraisers[fundIndex].balance;
+        let fundBalance = 0;
+        try {
+            fundBalance = yourFundraisers[fundIndex].balance;
+        } catch (error) {
+            fundBalance = 0;
+        }
         const fundGoal = allFundraisers[fundIndex].goal;
 
         if (currentDate > fundDeadline) {
